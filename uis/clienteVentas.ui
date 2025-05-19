@@ -45,7 +45,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>30</y>
+      <y>60</y>
       <width>181</width>
       <height>51</height>
      </rect>
@@ -57,24 +57,6 @@
     </property>
     <property name="text">
      <string>Buscar</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>511</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
    <widget class="QTableWidget" name="tableWidget">
@@ -105,10 +87,10 @@
      <bool>true</bool>
     </attribute>
     <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>254</number>
+     <number>145</number>
     </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>254</number>
+     <number>145</number>
     </attribute>
     <attribute name="horizontalHeaderHighlightSections">
      <bool>true</bool>
@@ -118,7 +100,7 @@
     </attribute>
     <column>
      <property name="text">
-      <string>Modificar</string>
+      <string>Borrar</string>
      </property>
     </column>
     <column>
@@ -128,12 +110,27 @@
     </column>
     <column>
      <property name="text">
-      <string>Producto</string>
+      <string>Cliente</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Proveedor</string>
+      <string>Fecha</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Total</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Metodo</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Empleado</string>
      </property>
     </column>
    </widget>
@@ -141,7 +138,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>90</y>
+      <y>120</y>
       <width>181</width>
       <height>51</height>
      </rect>
@@ -159,7 +156,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>90</y>
+      <y>60</y>
       <width>101</width>
       <height>51</height>
      </rect>
@@ -177,7 +174,7 @@
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>90</y>
+      <y>60</y>
       <width>401</width>
       <height>51</height>
      </rect>
@@ -196,30 +193,11 @@
      </property>
     </item>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>150</y>
-      <width>181</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Asignar proveedor
-a producto</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>150</y>
+      <y>120</y>
       <width>211</width>
       <height>51</height>
      </rect>
@@ -237,7 +215,7 @@ a producto</string>
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>150</y>
+      <y>120</y>
       <width>301</width>
       <height>51</height>
      </rect>
