@@ -11,6 +11,9 @@
 from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
+import sys
+import db
+import ui_inicioR
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -43,6 +46,7 @@ class Ui_MainWindow(object):
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(340, 560, 191, 71))
+        self.pushButton.clicked.connect(self.goToInicioR)
         font2 = QFont()
         font2.setPointSize(16)
         self.pushButton.setFont(font2)
@@ -54,7 +58,7 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(340, 60, 401, 221))
         self.label_3.setFont(font1)
-        self.label_3.setPixmap(QPixmap(u":/prefijoNuevo/s.png"))
+        self.label_3.setPixmap(QPixmap(u"img\\s.png"))
         self.label_3.setScaledContents(True)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -73,6 +77,10 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Ingresar", None))
         self.label_3.setText("")
     # retranslateUi
+    
+    def goToInicioR(self):      
+        self.inicioR = ui_inicioR.inicioR()
+        self.inicioR.show()
 
 class inicio(QMainWindow):
     def __init__(self):

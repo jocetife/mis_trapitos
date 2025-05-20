@@ -11,6 +11,7 @@
 from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
+import db
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -18,6 +19,7 @@ class Ui_MainWindow(object):
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(1080, 720)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.lineEdit = QLineEdit(self.centralwidget)
@@ -43,6 +45,7 @@ class Ui_MainWindow(object):
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(340, 560, 401, 71))
+        self.pushButton.clicked.connect(self.register)
         font2 = QFont()
         font2.setPointSize(16)
         self.pushButton.setFont(font2)
@@ -50,7 +53,7 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(340, 60, 401, 221))
         self.label_3.setFont(font1)
-        self.label_3.setPixmap(QPixmap(u":/prefijoNuevo/s.png"))
+        self.label_3.setPixmap(QPixmap(u"img\\s.png"))
         self.label_3.setScaledContents(True)
         self.label_4 = QLabel(self.centralwidget)
         self.label_4.setObjectName(u"label_4")
@@ -78,6 +81,16 @@ class Ui_MainWindow(object):
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Email", None))
         self.lineEdit_3.setText("")
     # retranslateUi
+    
+    def register(self):
+        connection = db.connect()
+        if self.lineEdit.text() != "" and self.lineEdit_2.text() != "" and self.lineEdit_3.text() != "":
+            cursor = connection.cursor()
+            print(f"INSERT INTO empleado (nombre,telefono,email) VALUES (\'{self.lineEdit.text()}\',\'{self.lineEdit_2.text()}\',\'{self.lineEdit_3.text()}\');")
+            cursor.execute(f"INSERT INTO empleado (nombre,telefono,email) VALUES (\'{self.lineEdit.text()}\',\'{self.lineEdit_2.text()}\',\'{self.lineEdit_3.text()}\');")
+            self.mainWindow.close()
+        else:
+            pass
 
 class inicioR(QMainWindow):
     def __init__(self):
