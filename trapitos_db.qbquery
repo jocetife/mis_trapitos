@@ -4,9 +4,8 @@
 );
 CREATE TABLE administrador (
     id_administrador INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50),
-    telefono VARCHAR(12),
-    email VARCHAR(320)
+    id_empleado INT,
+    FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado)
 );
 CREATE TABLE proveedor (
     id_proveedor INT AUTO_INCREMENT PRIMARY KEY,
