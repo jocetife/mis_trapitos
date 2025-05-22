@@ -86,8 +86,9 @@ class Ui_MainWindow(object):
         connection = db.connect()
         if self.lineEdit.text() != "" and self.lineEdit_2.text() != "" and self.lineEdit_3.text() != "":
             cursor = connection.cursor()
-            print(f"INSERT INTO empleado (nombre,telefono,email) VALUES (\'{self.lineEdit.text()}\',\'{self.lineEdit_2.text()}\',\'{self.lineEdit_3.text()}\');")
             cursor.execute(f"INSERT INTO empleado (nombre,telefono,email) VALUES (\'{self.lineEdit.text()}\',\'{self.lineEdit_2.text()}\',\'{self.lineEdit_3.text()}\');")
+            cursor.close()
+            connection.close()
             self.mainWindow.close()
         else:
             pass

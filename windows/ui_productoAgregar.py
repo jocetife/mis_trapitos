@@ -12,12 +12,15 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(511, 752)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)
@@ -40,6 +43,7 @@ class Ui_MainWindow(object):
         font1 = QFont()
         font1.setPointSize(16)
         self.pushButton.setFont(font1)
+        self.pushButton.clicked.connect(self.add)
         self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(30, 140, 220, 41))
@@ -114,6 +118,19 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.lineEdit_2.textChanged.connect(self.isEmpty)
+        self.spinBox.valueChanged.connect(self.isEmpty)
+
+        self.connection = db.connect()
+        self.cursor = self.connection.cursor()
+        self.cursor.execute("SELECT * FROM categoria;")
+        categories = self.cursor.fetchall()
+        for i in range(len(categories)):
+            self.comboBox.addItem(categories[i][1])
+        if self.lineEdit_2.text() == "" and self.spinBox.value() == 0:
+            self.dateEdit.setEnabled(False)
+            self.dateEdit_2.setEnabled(False)
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
@@ -132,6 +149,28 @@ class Ui_MainWindow(object):
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Fecha de inicio\n"
 "de la oferta", None))
     # retranslateUi
+
+    def add(self):
+        self.cursor.execute(f"SELECT * FROM categoria WHERE nombre_categoria = \'{self.comboBox.currentText()}\'")
+        category_id = self.cursor.fetchall()
+        if self.lineEdit_2.text() == "" or self.spinBox.value() == 0:
+            self.cursor.execute(f"INSERT INTO producto (nombre,descripcion,precio,oferta,porc_desc,id_categoria,fecha_ini_oferta,fecha_fin_oferta) VALUES (\'{self.lineEdit_4.text()}\', \'{self.lineEdit_3.text()}\', {self.doubleSpinBox.value()}, \'{self.lineEdit_2.text()}\', {self.spinBox.value()}, {category_id[0][0]}, NULL, NULL);")
+        else:
+            self.cursor.execute(f"INSERT INTO producto (nombre,descripcion,precio,oferta,porc_desc,id_categoria,fecha_ini_oferta,fecha_fin_oferta) VALUES (\'{self.lineEdit_4.text()}\', \'{self.lineEdit_3.text()}\', {self.doubleSpinBox.value()}, \'{self.lineEdit_2.text()}\', {self.spinBox.value()}, {category_id[0][0]}, \'{str(self.dateEdit.date())}\', \'{str(self.dateEdit_2.date())}\');")
+        self.mainWindow.close()
+
+    def isEmpty(self):
+        if self.lineEdit_2.text() == "" and self.spinBox.value() == 0:
+            self.dateEdit.setEnabled(False)
+            self.dateEdit_2.setEnabled(False)
+        else:
+            self.dateEdit.setEnabled(True)
+            self.dateEdit_2.setEnabled(True)
+    
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
 class productoAgregar(QMainWindow):
     def __init__(self):

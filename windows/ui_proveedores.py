@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         font = QFont()
         font.setPointSize(16)
         self.label_3.setFont(font)
-        self.label_3.setPixmap(QPixmap(u":/prefijoNuevo/s.png"))
+        self.label_3.setPixmap(QPixmap(u"img\\s.png"))
         self.label_3.setScaledContents(True)
         self.pushButton_5 = QPushButton(self.centralwidget)
         self.pushButton_5.setObjectName(u"pushButton_5")

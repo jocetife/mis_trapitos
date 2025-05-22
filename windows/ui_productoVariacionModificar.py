@@ -12,17 +12,27 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+
+    product_id = None
+    productVariation_id = None
+
+    def setupUi(self, MainWindow, product_id,productVariation_id):
+        self.product_id = product_id
+        self.productVariation_id = productVariation_id
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(511, 350)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 260, 451, 71))
+        self.pushButton.clicked.connect(self.modify)
         font = QFont()
         font.setPointSize(16)
         self.pushButton.setFont(font)
@@ -71,8 +81,29 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.connection = db.connect()
+        self.cursor = self.connection.cursor()
+        self.cursor.execute(f"SELECT * FROM producto WHERE id_producto = {self.product_id};")
+        products = self.cursor.fetchall()
+        for i in range(len(products)):
+            self.comboBox.addItem(products[i][1])
+        self.cursor.execute(f"SELECT * FROM variacion_producto WHERE id_variacion = {self.productVariation_id}")
+        variation = self.cursor.fetchall()
+        self.lineEdit_3.setText(variation[0][1])
+        self.lineEdit_5.setText(variation[0][2])
+        self.spinBox.setValue(int(variation[0][3]))
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
+    
+    def modify(self):
+        self.cursor.execute(f"UPDATE variacion_producto SET talla = \'{self.lineEdit_3.text()}\',color = \'{self.lineEdit_5.text()}\',cantidad_stock = {self.spinBox.value()},id_producto = {self.product_id} WHERE id_variacion = {self.productVariation_id};")
+        self.mainWindow.close()
+
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
@@ -84,7 +115,7 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 class productoVariacionModificar(QMainWindow):
-    def __init__(self):
+    def __init__(self,product_id,productVariation_id):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self,product_id,productVariation_id)

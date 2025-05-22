@@ -12,12 +12,19 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+
+    productVariation_id = None  
+
+    def setupUi(self, MainWindow,productVariation_id):
+        self.productVariation_id = productVariation_id
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(710, 399)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label_3 = QLabel(self.centralwidget)
@@ -32,10 +39,12 @@ class Ui_MainWindow(object):
         self.pushButton_5.setObjectName(u"pushButton_5")
         self.pushButton_5.setGeometry(QRect(80, 240, 221, 91))
         self.pushButton_5.setFont(font)
+        self.pushButton_5.clicked.connect(self.delete)
         self.pushButton_6 = QPushButton(self.centralwidget)
         self.pushButton_6.setObjectName(u"pushButton_6")
         self.pushButton_6.setGeometry(QRect(410, 240, 221, 91))
         self.pushButton_6.setFont(font)
+        self.pushButton_6.clicked.connect(self.cancel)
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(40, 30, 631, 151))
@@ -50,6 +59,20 @@ class Ui_MainWindow(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
+        
+    def cancel(self):
+        self.mainWindow.close()
+
+    def delete(self):
+        self.connection = db.connect()
+        self.cursor = self.connection.cursor()
+        self.cursor.execute(f"DELETE FROM variacion_producto WHERE id_variacion = {self.productVariation_id};")
+        self.mainWindow.close()
+
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
@@ -61,7 +84,7 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 class productoVariacionBorrar(QMainWindow):
-    def __init__(self):
+    def __init__(self,productVariation_id):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self,productVariation_id)

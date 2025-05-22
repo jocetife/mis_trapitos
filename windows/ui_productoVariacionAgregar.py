@@ -12,17 +12,24 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow,product_id):
+
+        self.product_id = product_id
+
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(511, 350)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 260, 451, 71))
+        self.pushButton.clicked.connect(self.add)
         font = QFont()
         font.setPointSize(16)
         self.pushButton.setFont(font)
@@ -71,6 +78,13 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.connection = db.connect()
+        self.cursor = self.connection.cursor()
+        self.cursor.execute(f"SELECT * FROM producto WHERE id_producto = {self.product_id};")
+        products = self.cursor.fetchall()
+        for i in range(len(products)):
+            self.comboBox.addItem(products[i][1])
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
@@ -82,9 +96,20 @@ class Ui_MainWindow(object):
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Talla", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Color", None))
     # retranslateUi
+    
+    def add(self):
+        self.cursor.execute(f"SELECT * FROM producto WHERE nombre = \'{self.comboBox.currentText()}\'")
+        product_id = self.cursor.fetchall()
+        self.cursor.execute(f"INSERT INTO variacion_producto (talla,color,cantidad_stock,id_producto) VALUES (\'{self.lineEdit_3.text()}\', \'{self.lineEdit_5.text()}\', {self.spinBox.value()},{product_id[0][0]});")
+        self.mainWindow.close()
+    
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
 class productoVariacionAgregar(QMainWindow):
-    def __init__(self):
+    def __init__(self,product_id):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self,product_id)

@@ -12,12 +12,19 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+
+    product_id = None
+
+    def setupUi(self, MainWindow,product_id):
+        self.product_id = product_id
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(511, 752)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)
@@ -37,6 +44,7 @@ class Ui_MainWindow(object):
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 660, 451, 71))
+        self.pushButton.clicked.connect(self.modify)
         font1 = QFont()
         font1.setPointSize(16)
         self.pushButton.setFont(font1)
@@ -114,8 +122,54 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.connection = db.connect()
+        
+        self.cursor = self.connection.cursor()
+        self.cursor.execute(f"SELECT id_producto, nombre,descripcion,precio,oferta,porc_desc,categoria.nombre_categoria,fecha_ini_oferta,fecha_fin_oferta  FROM producto join categoria on producto.id_categoria = categoria.id_categoria WHERE id_producto = {self.product_id};")
+        product = self.cursor.fetchall()
+        self.lineEdit_4.setText(product[0][1])
+        self.lineEdit_3.setText(product[0][2])
+        self.doubleSpinBox.setValue(float(product[0][3]))
+        self.cursor.execute("SELECT * FROM categoria;")
+        categories = self.cursor.fetchall()
+        for i in range(len(categories)):
+            self.comboBox.addItem(categories[i][1])
+        self.comboBox.setCurrentText(product[0][6])
+        self.lineEdit_2.setText(product[0][4])
+        self.spinBox.setValue(int(product[0][5]))
+        if self.lineEdit_2.text() == "" and self.spinBox.value() == 0:
+            self.dateEdit.setEnabled(False)
+            self.dateEdit_2.setEnabled(False)
+        else:
+            self.dateEdit.setDate(QDate(int(str(product[0][7])[0:4]),int(str(product[0][7])[5:7]),int(str(product[0][7])[8:10])))
+            self.dateEdit_2.setDate(QDate(int(str(product[0][8])[0:4]),int(str(product[0][8])[5:7]),int(str(product[0][8])[8:10])))
+        self.lineEdit_2.textChanged.connect(self.isEmpty)
+        self.spinBox.valueChanged.connect(self.isEmpty)
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
+        
+    def modify(self):
+        self.cursor.execute(f"SELECT * FROM categoria WHERE nombre_categoria = \'{self.comboBox.currentText()}\'")
+        category_id = self.cursor.fetchall()
+        if self.lineEdit_2.text() == "" or self.spinBox.value() == 0:
+            self.cursor.execute(f"UPDATE producto SET nombre = \'{self.lineEdit_4.text()}\',descripcion = \'{self.lineEdit_3.text()}\',precio = {self.doubleSpinBox.value()},oferta = \'{self.lineEdit_2.text()}\', porc_desc = {self.spinBox.value()},id_categoria = {category_id[0][0]},fecha_ini_oferta = NULL,fecha_fin_oferta = NULL WHERE id_producto = {self.product_id};")
+        else:
+            self.cursor.execute(f"UPDATE producto SET nombre = \'{self.lineEdit_4.text()}\',descripcion = \'{self.lineEdit_3.text()}\',precio = {self.doubleSpinBox.value()},oferta = \'{self.lineEdit_2.text()}\', porc_desc = {self.spinBox.value()},id_categoria = {category_id[0][0]},fecha_ini_oferta = \'{str(self.dateEdit.date())}\',fecha_fin_oferta = \'{str(self.dateEdit_2.date())}\' WHERE id_producto = {self.product_id};")
+        self.mainWindow.close()
+
+    def isEmpty(self):
+        if self.lineEdit_2.text() == "" and self.spinBox.value() == 0:
+            self.dateEdit.setEnabled(False)
+            self.dateEdit_2.setEnabled(False)
+        else:
+            self.dateEdit.setEnabled(True)
+            self.dateEdit_2.setEnabled(True)
+
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
@@ -134,7 +188,7 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 class productoModificar(QMainWindow):
-    def __init__(self):
+    def __init__(self,product_id):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self,product_id)

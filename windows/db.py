@@ -2,7 +2,6 @@ import mysql.connector
 from mysql.connector import Error
 
 def connect(host='localhost', database='mis_trapitos', user='root', password=''):
-    """Crea y devuelve una conexión a la base de datos MySQL."""
     try:
         connection = mysql.connector.connect(
             host=host,
@@ -11,7 +10,7 @@ def connect(host='localhost', database='mis_trapitos', user='root', password='')
             password=password
         )
         if connection.is_connected():
-            print("Conexión exitosa a la base de datos")
+            connection.autocommit = True
             return connection
     except Error as e:
         print(f"Error al conectar a la base de datos: {e}")
