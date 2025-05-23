@@ -1,8 +1,7 @@
 Fecha: 2025-05-22
 Cliente: 
 id_cliente, direccion, nombre, telefono, email
-(1, 'Calle 123 #45-67, Ciudad de México', 'Laura González', '+52 55 1234 0000', 'laura.gonzalez@email.com')
+(3, 'asdsfSDF', 'Jose Panduro', '213213213123', 'JOSE@HOTMAIL.COM')
 
 Ventas: 
 id_venta, fecha de venta, total, metodo de pago, cliente, empleado
-(6, datetime.date(2025, 5, 22), Decimal('150.00'), 'Tarjeta de crédito', 'Laura González', 'joce')

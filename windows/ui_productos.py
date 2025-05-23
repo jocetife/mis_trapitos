@@ -17,6 +17,7 @@ import ui_productoAgregar
 import ui_productoBorrar
 import ui_productoModificar
 import ui_productosVariacion
+import ui_categoriaAgregar
 import db
 
 class Ui_MainWindow(object):
@@ -41,6 +42,13 @@ class Ui_MainWindow(object):
         self.label_3.setFont(font)
         self.label_3.setPixmap(QPixmap(u"img\\s.png"))
         self.label_3.setScaledContents(True)
+        self.pushButton_5 = QPushButton(self.centralwidget)
+        self.pushButton_5.setObjectName(u"pushButton_5")
+        self.pushButton_5.setGeometry(QRect(30, 150, 181, 51))
+        font1 = QFont()
+        font1.setPointSize(12)
+        self.pushButton_5.setFont(font1)
+        self.pushButton_5.clicked.connect(self.goToAddCategory)
         self.lineEdit_2 = QLineEdit(self.centralwidget)
         self.lineEdit_2.setObjectName(u"lineEdit_2")
         self.lineEdit_2.setGeometry(QRect(80, 90, 461, 50))
@@ -175,6 +183,10 @@ class Ui_MainWindow(object):
     def goToProductsVariations(self,product_id):
         self.productosVariacion = ui_productosVariacion.productosVariacion(product_id)
         self.productosVariacion.show()
+
+    def goToAddCategory(self):
+        self.categoriaAgregar = ui_categoriaAgregar.categoriaAgregar()
+        self.categoriaAgregar.show()
         
     def setItems(self):
         if self.lineEdit_2.text() != "":
@@ -206,6 +218,7 @@ class Ui_MainWindow(object):
         self.label_3.setText("")
         self.label_2.setText("🔍")
         self.lineEdit_2.setText("")
+        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Agregar categor\u00eda", None))
         ___qtablewidgetitem01 = self.tableWidget.horizontalHeaderItem(0)
         ___qtablewidgetitem01.setText(QCoreApplication.translate("MainWindow", u"Borrar", None));
         ___qtablewidgetitem02 = self.tableWidget.horizontalHeaderItem(1)

@@ -15,8 +15,7 @@ from PySide6.QtWidgets import *  # type: ignore
 import db
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow,client_id):
-        self.client_id = client_id
+    def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
@@ -101,7 +100,7 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 class clienteAgregar(QMainWindow):
-    def __init__(self,client_id):
+    def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self,client_id)
+        self.ui.setupUi(self)
