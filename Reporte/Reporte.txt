@@ -1,11 +1,10 @@
 Fecha: 2025-05-22
-Producto: 
-id_producto, nombre, descripcion, precio, oferta, porc_desc, categoria, inicio de oferta, fin de oferta
-(2, 'Blusa Elegante', 'Blusa de seda color crema, ideal para ocasiones formales.', Decimal('45.00'), '', 0, 'blusas', None, None)
+Proveedor: 
+id_proveedor, nombre, telefono, email
+(1, 'Moda Urbana S.A.', '+54 11 4455-8899', 'contacto@modaurbana.com')
 
-Variaciones: 
-id_variacion, talla, color, cantidad_stock, id_producto
-(3, 'M', 'Crema', 8, 2)
-
-Proveedores: id_producto, nombre, telefono, email
-(2, 'Moda Urbana S.A.', '+54 11 4455-8899', 'contacto@modaurbana.com')
+Productos que provee: 
+Nombre del producto, id_proveedor
+('Short Deportivo', 1)
+('Short Deportivo', 1)
+('Short de Jean', 1)

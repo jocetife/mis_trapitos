@@ -128,24 +128,24 @@ class Ui_MainWindow(object):
                 self.itemVariationReport(variations[row][0])
 
     def deleteItemVariation(self,productVariation_id):
-        self.productoBorrar = ui_productoVariacionBorrar.productoVariacionBorrar(productVariation_id)
-        self.productoBorrar.show()
+        self.variacionBorrar = ui_productoVariacionBorrar.productoVariacionBorrar(productVariation_id)
+        self.variacionBorrar.show()
     
     def modifyItemVariation(self,productVariation_id):
-        self.productoModificar = ui_productoVariacionModificar.productoVariacionModificar(self.product_id,productVariation_id)
-        self.productoModificar.show()
+        self.variacionModificar = ui_productoVariacionModificar.productoVariacionModificar(self.product_id,productVariation_id)
+        self.variacionModificar.show()
 
     def itemVariationReport(self,productVariation_id):
         with open("Reporte\\Reporte.txt", "w") as f:
             f.write(f"Fecha: {date.today()}")
-            f.write("Variacion: ")
+            f.write("\nVariacion: ")
             f.write("\nid_variacion, talla, color, stock, id_producto")
             self.cursor.execute(f"SELECT * FROM variacion_producto WHERE id_variacion = {productVariation_id}")
             f.write("\n"+str(self.cursor.fetchone()))
                    
     def addItemVariation(self):
-        self.productoAgregar = ui_productoVariacionAgregar.productoVariacionAgregar(self.product_id)
-        self.productoAgregar.show()
+        self.variacionAgregar = ui_productoVariacionAgregar.productoVariacionAgregar(self.product_id)
+        self.variacionAgregar.show()
         
     def setItems(self):
         if self.lineEdit_2.text() != "":
@@ -153,16 +153,17 @@ class Ui_MainWindow(object):
         else:
             self.cursor.execute(f"SELECT * FROM variacion_producto WHERE id_producto = {self.product_id};")
         variations = self.cursor.fetchall()
-        self.tableWidget.setRowCount(len(variations))
-        self.tableWidget.setColumnCount(len(variations[0])+3)
-        for i in range(len(variations)):
+        if len(variations) > 0:
+            self.tableWidget.setRowCount(len(variations))
+            self.tableWidget.setColumnCount(len(variations[0])+3)
+            for i in range(len(variations)):
 
-            self.tableWidget.setItem(i,0,QTableWidgetItem("🗑️"))
-            self.tableWidget.setItem(i,1,QTableWidgetItem("✏️"))
-            self.tableWidget.setItem(i,2,QTableWidgetItem("📊"))
+                self.tableWidget.setItem(i,0,QTableWidgetItem("🗑️"))
+                self.tableWidget.setItem(i,1,QTableWidgetItem("✏️"))
+                self.tableWidget.setItem(i,2,QTableWidgetItem("📊"))
 
-            for j in range(len(variations[i])):
-                self.tableWidget.setItem(i,j+3,QTableWidgetItem(str(variations[i][j])))
+                for j in range(len(variations[i])):
+                    self.tableWidget.setItem(i,j+3,QTableWidgetItem(str(variations[i][j])))
         QTimer.singleShot(3000, self.setItems)
 
     def closeEvent(self,event):

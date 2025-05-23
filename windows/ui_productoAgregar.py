@@ -153,10 +153,10 @@ class Ui_MainWindow(object):
     def add(self):
         self.cursor.execute(f"SELECT * FROM categoria WHERE nombre_categoria = \'{self.comboBox.currentText()}\'")
         category_id = self.cursor.fetchall()
-        if self.lineEdit_2.text() == "" or self.spinBox.value() == 0:
+        if self.lineEdit_2.text() == "" and self.spinBox.value() == 0:
             self.cursor.execute(f"INSERT INTO producto (nombre,descripcion,precio,oferta,porc_desc,id_categoria,fecha_ini_oferta,fecha_fin_oferta) VALUES (\'{self.lineEdit_4.text()}\', \'{self.lineEdit_3.text()}\', {self.doubleSpinBox.value()}, \'{self.lineEdit_2.text()}\', {self.spinBox.value()}, {category_id[0][0]}, NULL, NULL);")
         else:
-            self.cursor.execute(f"INSERT INTO producto (nombre,descripcion,precio,oferta,porc_desc,id_categoria,fecha_ini_oferta,fecha_fin_oferta) VALUES (\'{self.lineEdit_4.text()}\', \'{self.lineEdit_3.text()}\', {self.doubleSpinBox.value()}, \'{self.lineEdit_2.text()}\', {self.spinBox.value()}, {category_id[0][0]}, \'{str(self.dateEdit.date())}\', \'{str(self.dateEdit_2.date())}\');")
+            self.cursor.execute(f"INSERT INTO producto (nombre,descripcion,precio,oferta,porc_desc,id_categoria,fecha_ini_oferta,fecha_fin_oferta) VALUES (\'{self.lineEdit_4.text()}\', \'{self.lineEdit_3.text()}\', {self.doubleSpinBox.value()}, \'{self.lineEdit_2.text()}\', {self.spinBox.value()}, {category_id[0][0]}, \'{str(self.dateEdit.date().getDate()[0])+"-"+str(self.dateEdit.date().getDate()[1]).rjust(2,'0')+"-"+str(self.dateEdit.date().getDate()[2]).rjust(2,'0')}\', \'{str(self.dateEdit_2.date().getDate()[0])+"-"+str(self.dateEdit_2.date().getDate()[1]).rjust(2,'0')+"-"+str(self.dateEdit_2.date().getDate()[2]).rjust(2,'0')}\');")
         self.mainWindow.close()
 
     def isEmpty(self):
