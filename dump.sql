@@ -111,7 +111,7 @@ CREATE TABLE `detalle_articulo` (
   KEY `id_variacion` (`id_variacion`),
   CONSTRAINT `detalle_articulo_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_articulo_ibfk_2` FOREIGN KEY (`id_variacion`) REFERENCES `variacion_producto` (`id_variacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,6 +120,7 @@ CREATE TABLE `detalle_articulo` (
 
 LOCK TABLES `detalle_articulo` WRITE;
 /*!40000 ALTER TABLE `detalle_articulo` DISABLE KEYS */;
+INSERT INTO `detalle_articulo` VALUES (17,2,50.25,0.00,1,1),(18,1,85.00,0.00,2,2),(19,4,50.00,0.00,3,9),(20,1,49.99,0.00,4,4),(21,3,100.00,0.00,5,8),(22,2,75.13,0.00,6,7),(23,1,89.90,0.00,7,1),(24,5,15.00,0.00,8,3);
 /*!40000 ALTER TABLE `detalle_articulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,7 +286,7 @@ CREATE TABLE `venta` (
   KEY `id_empleado` (`id_empleado`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,6 +295,7 @@ CREATE TABLE `venta` (
 
 LOCK TABLES `venta` WRITE;
 /*!40000 ALTER TABLE `venta` DISABLE KEYS */;
+INSERT INTO `venta` VALUES (1,'2025-01-15',120.50,'Tarjeta de crédito',1,26),(2,'2025-02-03',85.00,'Efectivo',2,23),(3,'2025-02-20',200.00,'Transferencia',1,26),(4,'2025-03-10',49.99,'Tarjeta de débito',2,23),(5,'2025-04-01',300.00,'Efectivo',1,26),(6,'2025-04-15',150.25,'Tarjeta de crédito',2,23),(7,'2025-05-05',89.90,'Transferencia',1,26),(8,'2025-05-20',75.00,'Efectivo',2,23);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -306,4 +308,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-21  2:11:00
+-- Dump completed on 2025-05-22 22:24:37

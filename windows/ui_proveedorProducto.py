@@ -136,9 +136,9 @@ class Ui_MainWindow(object):
                 relationships.append(self.cursor.fetchone())
         else:
             self.cursor.execute(f"SELECT producto_proveedor.id_pp, producto.nombre, producto_proveedor.id_proveedor FROM producto_proveedor JOIN producto ON producto.id_producto = producto_proveedor.id_producto WHERE producto_proveedor.id_proveedor = {self.supplier_id};")
-            relationships = self.cursor.fetchall()  
-        if len(relationships) > 0:
+            relationships = self.cursor.fetchall() 
             self.tableWidget.setRowCount(len(relationships))
+        if len(relationships) > 0:
             self.tableWidget.setColumnCount(len(relationships[0])+2)
             for i in range(len(relationships)):
 

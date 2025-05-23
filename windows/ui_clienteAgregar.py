@@ -12,12 +12,15 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(511, 358)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.pushButton = QPushButton(self.centralwidget)
@@ -26,6 +29,7 @@ class Ui_MainWindow(object):
         font = QFont()
         font.setPointSize(16)
         self.pushButton.setFont(font)
+        self.pushButton.clicked.connect(self.add)
         self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(30, 140, 220, 51))
@@ -74,6 +78,17 @@ class Ui_MainWindow(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
+        
+    def add(self):
+        self.connection = db.connect()
+        self.cursor = self.connection.cursor()
+        self.cursor.execute(f"INSERT INTO cliente (direccion,nombre,telefono,email) VALUES (\'{self.lineEdit_5.text()}\', \'{self.lineEdit_4.text()}\',\'{self.lineEdit_6.text()}\',\'{self.lineEdit_7.text()}\');")
+        self.mainWindow.close()
+    
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
