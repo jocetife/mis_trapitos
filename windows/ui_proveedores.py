@@ -160,8 +160,8 @@ class Ui_MainWindow(object):
         else:
             self.cursor.execute(f"SELECT * FROM proveedor;")
         suppliers = self.cursor.fetchall()
+        self.tableWidget.setRowCount(len(suppliers))
         if len(suppliers) > 0:
-            self.tableWidget.setRowCount(len(suppliers))
             self.tableWidget.setColumnCount(len(suppliers[0])+4)
             for i in range(len(suppliers)):
 

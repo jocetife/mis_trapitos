@@ -153,8 +153,8 @@ class Ui_MainWindow(object):
         else:
             self.cursor.execute(f"SELECT * FROM variacion_producto WHERE id_producto = {self.product_id};")
         variations = self.cursor.fetchall()
+        self.tableWidget.setRowCount(len(variations))
         if len(variations) > 0:
-            self.tableWidget.setRowCount(len(variations))
             self.tableWidget.setColumnCount(len(variations[0])+3)
             for i in range(len(variations)):
 

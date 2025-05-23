@@ -1,10 +1,8 @@
 Fecha: 2025-05-22
-Proveedor: 
-id_proveedor, nombre, telefono, email
-(1, 'Moda Urbana S.A.', '+54 11 4455-8899', 'contacto@modaurbana.com')
+Cliente: 
+id_cliente, direccion, nombre, telefono, email
+(1, 'Calle 123 #45-67, Ciudad de México', 'Laura González', '+52 55 1234 0000', 'laura.gonzalez@email.com')
 
-Productos que provee: 
-Nombre del producto, id_proveedor
-('Short Deportivo', 1)
-('Short Deportivo', 1)
-('Short de Jean', 1)
+Ventas: 
+id_venta, fecha de venta, total, metodo de pago, cliente, empleado
+(6, datetime.date(2025, 5, 22), Decimal('150.00'), 'Tarjeta de crédito', 'Laura González', 'joce')

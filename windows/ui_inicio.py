@@ -75,7 +75,7 @@ class Ui_MainWindow(object):
         self.lineEdit_2.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"ID de usuario", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Contrase\u00f1a", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Crear account", None))
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Crear cuenta", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Ingresar", None))
         self.label_3.setText("")
     # retranslateUi

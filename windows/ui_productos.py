@@ -182,8 +182,8 @@ class Ui_MainWindow(object):
         else:
             self.cursor.execute(f"SELECT id_producto, nombre,descripcion,precio,oferta,porc_desc,categoria.nombre_categoria,fecha_ini_oferta,fecha_fin_oferta  FROM producto join categoria on producto.id_categoria = categoria.id_categoria;")
         products = self.cursor.fetchall()
+        self.tableWidget.setRowCount(len(products))
         if len(products) > 0:
-            self.tableWidget.setRowCount(len(products))
             self.tableWidget.setColumnCount(len(products[0])+4)
             for i in range(len(products)):
 

@@ -82,7 +82,7 @@ class Ui_MainWindow(object):
         font3 = QFont()
         font3.setPointSize(12)
         self.pushButton_7.setFont(font3)
-        self.pushButton_7.clicked.connect(self.addItem)
+        self.pushButton_7.clicked.connect(self.addClient)
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(30, 60, 141, 61))
@@ -144,46 +144,38 @@ class Ui_MainWindow(object):
             f.write("\n\nVentas: ")
             f.write("\nid_venta, fecha de venta, total, metodo de pago, cliente, empleado")
             self.cursor.execute(f"SELECT id_venta,fecha_venta,total,metodo_de_pago,cliente.nombre ,empleado.nombre FROM venta JOIN cliente ON venta.id_cliente = cliente.id_cliente JOIN empleado ON venta.id_empleado = empleado.id_empleado WHERE venta.id_cliente = {client_id};")
-            sales = self.cursor.fetchall()
-            ###########
-            if len(variations) > 0:
-                for i in range(len(variations)):
-                    f.write("\n"+str(variations[i]))
-            f.write("\n\nProveedores: ")
-            self.cursor.execute(f"SELECT id_producto, proveedor.nombre, proveedor.telefono, proveedor.email FROM producto_proveedor JOIN proveedor ON producto_proveedor.id_proveedor = proveedor.id_proveedor WHERE producto_proveedor.id_producto = {product_id};")
-            f.write("\nid_producto, nombre, telefono, email")
-            suppliers = self.cursor.fetchall()
-            if len(suppliers) > 0:
-                for i in range(len(suppliers)):
-                    f.write("\n"+str(suppliers[i]))
+            sales = self.cursor.fetchall()         
+            if len(sales) > 0:
+                for i in range(len(sales)):
+                    f.write("\n"+str(sales[i]))
                    
 
     def addClient(self):
-        self.productoAgregar = ui_productoAgregar.productoAgregar()
+        self.productoAgregar = ui_clienteAgregar.clienteAgregar()
         self.productoAgregar.show()
     
     def goToClientSales(self,client_id):
-        self.productosVariacion = ui_productosVariacion.productosVariacion(product_id)
+        self.productosVariacion = ui_clienteVentas.clienteVentas(client_id)
         self.productosVariacion.show()
         
     def setItems(self):
         if self.lineEdit_2.text() != "":
-            self.cursor.execute(f"SELECT id_producto, nombre,descripcion,precio,oferta,porc_desc,categoria.nombre_categoria,fecha_ini_oferta,fecha_fin_oferta  FROM producto join categoria on producto.id_categoria = categoria.id_categoria WHERE producto.nombre LIKE \'%{self.lineEdit_2.text()}%\';")
+            self.cursor.execute(f"SELECT * FROM cliente WHERE nombre LIKE \'%{self.lineEdit_2.text()}%\';")
         else:
-            self.cursor.execute(f"SELECT id_producto, nombre,descripcion,precio,oferta,porc_desc,categoria.nombre_categoria,fecha_ini_oferta,fecha_fin_oferta  FROM producto join categoria on producto.id_categoria = categoria.id_categoria;")
-        products = self.cursor.fetchall()
-        if len(products) > 0:
-            self.tableWidget.setRowCount(len(products))
-            self.tableWidget.setColumnCount(len(products[0])+4)
-            for i in range(len(products)):
+            self.cursor.execute(f"SELECT * FROM cliente;")
+        clients = self.cursor.fetchall()
+        self.tableWidget.setRowCount(len(clients))
+        if len(clients) > 0:
+            self.tableWidget.setColumnCount(len(clients[0])+4)
+            for i in range(len(clients)):
 
                 self.tableWidget.setItem(i,0,QTableWidgetItem("🗑️"))
                 self.tableWidget.setItem(i,1,QTableWidgetItem("✏️"))
                 self.tableWidget.setItem(i,2,QTableWidgetItem("📊"))
                 self.tableWidget.setItem(i,3,QTableWidgetItem("🔍"))
 
-                for j in range(len(products[i])):
-                    self.tableWidget.setItem(i,j+4,QTableWidgetItem(str(products[i][j])))
+                for j in range(len(clients[i])):
+                    self.tableWidget.setItem(i,j+4,QTableWidgetItem(str(clients[i][j])))
         QTimer.singleShot(3000, self.setItems)
 
     def closeEvent(self,event):
@@ -194,20 +186,25 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_3.setText("")
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Buscar", None))
         self.lineEdit_2.setText("")
-        ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Modificar", None));
-        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
+        ___qtablewidgetitem01 = self.tableWidget.horizontalHeaderItem(0)
+        ___qtablewidgetitem01.setText(QCoreApplication.translate("MainWindow", u"Borrar", None));
+        ___qtablewidgetitem02 = self.tableWidget.horizontalHeaderItem(1)
+        ___qtablewidgetitem02.setText(QCoreApplication.translate("MainWindow", u"Modificar", None));
+        ___qtablewidgetitem03 = self.tableWidget.horizontalHeaderItem(2)
+        ___qtablewidgetitem03.setText(QCoreApplication.translate("MainWindow", u"Reporte", None));
+        ___qtablewidgetitem04 = self.tableWidget.horizontalHeaderItem(3)
+        ___qtablewidgetitem04.setText(QCoreApplication.translate("MainWindow", u"Detalle", None));
+        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(4)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"ID", None));
-        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Nombre", None));
-        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Direcci\u00f3n", None));
-        ___qtablewidgetitem4 = self.tableWidget.horizontalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Email", None));
-        ___qtablewidgetitem5 = self.tableWidget.horizontalHeaderItem(5)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Telefono", None));
+        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(5)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Direcci\u00f3n", None));
+        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(6)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Nombre", None));
+        ___qtablewidgetitem4 = self.tableWidget.horizontalHeaderItem(7)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Telefono", None));
+        ___qtablewidgetitem5 = self.tableWidget.horizontalHeaderItem(8)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Email", None));
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"A\u00f1adir cliente", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Nombre", None))
     # retranslateUi
