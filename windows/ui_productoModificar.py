@@ -152,10 +152,10 @@ class Ui_MainWindow(object):
     def modify(self):
         self.cursor.execute(f"SELECT * FROM categoria WHERE nombre_categoria = \'{self.comboBox.currentText()}\'")
         category_id = self.cursor.fetchall()
-        if self.lineEdit_2.text() == "" or self.spinBox.value() == 0:
+        if self.lineEdit_2.text() == "" and self.spinBox.value() == 0:
             self.cursor.execute(f"UPDATE producto SET nombre = \'{self.lineEdit_4.text()}\',descripcion = \'{self.lineEdit_3.text()}\',precio = {self.doubleSpinBox.value()},oferta = \'{self.lineEdit_2.text()}\', porc_desc = {self.spinBox.value()},id_categoria = {category_id[0][0]},fecha_ini_oferta = NULL,fecha_fin_oferta = NULL WHERE id_producto = {self.product_id};")
         else:
-            self.cursor.execute(f"UPDATE producto SET nombre = \'{self.lineEdit_4.text()}\',descripcion = \'{self.lineEdit_3.text()}\',precio = {self.doubleSpinBox.value()},oferta = \'{self.lineEdit_2.text()}\', porc_desc = {self.spinBox.value()},id_categoria = {category_id[0][0]},fecha_ini_oferta = \'{str(self.dateEdit.date())}\',fecha_fin_oferta = \'{str(self.dateEdit_2.date())}\' WHERE id_producto = {self.product_id};")
+            self.cursor.execute(f"UPDATE producto SET nombre = \'{self.lineEdit_4.text()}\',descripcion = \'{self.lineEdit_3.text()}\',precio = {self.doubleSpinBox.value()},oferta = \'{self.lineEdit_2.text()}\', porc_desc = {self.spinBox.value()},id_categoria = {category_id[0][0]},fecha_ini_oferta = \'{str(self.dateEdit.date().getDate()[0])+"-"+str(self.dateEdit.date().getDate()[1]).rjust(2,'0')+"-"+str(self.dateEdit.date().getDate()[2]).rjust(2,'0')}\',fecha_fin_oferta = \'{str(self.dateEdit_2.date().getDate()[0])+"-"+str(self.dateEdit_2.date().getDate()[1]).rjust(2,'0')+"-"+str(self.dateEdit_2.date().getDate()[2]).rjust(2,'0')}\' WHERE id_producto = {self.product_id};")
         self.mainWindow.close()
 
     def isEmpty(self):

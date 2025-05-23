@@ -135,7 +135,7 @@ class Ui_MainWindow(object):
             elif column == 2:
                 self.itemReport(products[row][0])
             elif column == 3:
-                self.goToProductosVariacion(products[row][0])
+                self.goToProductsVariations(products[row][0])
         
     def deleteItem(self,product_id):
         self.productoBorrar = ui_productoBorrar.productoBorrar(product_id)
@@ -161,7 +161,7 @@ class Ui_MainWindow(object):
                     f.write("\n"+str(variations[i]))
             f.write("\n\nProveedores: ")
             self.cursor.execute(f"SELECT id_producto, proveedor.nombre, proveedor.telefono, proveedor.email FROM producto_proveedor JOIN proveedor ON producto_proveedor.id_proveedor = proveedor.id_proveedor WHERE producto_proveedor.id_producto = {product_id};")
-            f.write("id_producto, nombre, telefono, email")
+            f.write("\nid_producto, nombre, telefono, email")
             suppliers = self.cursor.fetchall()
             if len(suppliers) > 0:
                 for i in range(len(suppliers)):
@@ -172,7 +172,7 @@ class Ui_MainWindow(object):
         self.productoAgregar = ui_productoAgregar.productoAgregar()
         self.productoAgregar.show()
     
-    def goToProductosVariacion(self,product_id):
+    def goToProductsVariations(self,product_id):
         self.productosVariacion = ui_productosVariacion.productosVariacion(product_id)
         self.productosVariacion.show()
         
@@ -182,17 +182,18 @@ class Ui_MainWindow(object):
         else:
             self.cursor.execute(f"SELECT id_producto, nombre,descripcion,precio,oferta,porc_desc,categoria.nombre_categoria,fecha_ini_oferta,fecha_fin_oferta  FROM producto join categoria on producto.id_categoria = categoria.id_categoria;")
         products = self.cursor.fetchall()
-        self.tableWidget.setRowCount(len(products))
-        self.tableWidget.setColumnCount(len(products[0])+4)
-        for i in range(len(products)):
+        if len(products) > 0:
+            self.tableWidget.setRowCount(len(products))
+            self.tableWidget.setColumnCount(len(products[0])+4)
+            for i in range(len(products)):
 
-            self.tableWidget.setItem(i,0,QTableWidgetItem("🗑️"))
-            self.tableWidget.setItem(i,1,QTableWidgetItem("✏️"))
-            self.tableWidget.setItem(i,2,QTableWidgetItem("📊"))
-            self.tableWidget.setItem(i,3,QTableWidgetItem("🔍"))
+                self.tableWidget.setItem(i,0,QTableWidgetItem("🗑️"))
+                self.tableWidget.setItem(i,1,QTableWidgetItem("✏️"))
+                self.tableWidget.setItem(i,2,QTableWidgetItem("📊"))
+                self.tableWidget.setItem(i,3,QTableWidgetItem("🔍"))
 
-            for j in range(len(products[i])):
-                self.tableWidget.setItem(i,j+4,QTableWidgetItem(str(products[i][j])))
+                for j in range(len(products[i])):
+                    self.tableWidget.setItem(i,j+4,QTableWidgetItem(str(products[i][j])))
         QTimer.singleShot(3000, self.setItems)
 
     def closeEvent(self,event):

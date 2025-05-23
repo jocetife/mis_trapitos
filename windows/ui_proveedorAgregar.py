@@ -12,17 +12,21 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(511, 293)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 210, 451, 71))
+        self.pushButton.clicked.connect(self.add)
         font = QFont()
         font.setPointSize(16)
         self.pushButton.setFont(font)
@@ -72,6 +76,17 @@ class Ui_MainWindow(object):
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Tel\u00e9fono", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Nombre", None))
     # retranslateUi
+        
+    def add(self):
+        self.connection = db.connect()
+        self.cursor = self.connection.cursor()
+        self.cursor.execute(f"INSERT INTO proveedor (nombre,telefono,email) VALUES (\'{self.lineEdit_4.text()}\', \'{self.lineEdit_6.text()}\',\'{self.lineEdit_7.text()}\');")
+        self.mainWindow.close()
+    
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
 class proveedorAgregar(QMainWindow):
     def __init__(self):

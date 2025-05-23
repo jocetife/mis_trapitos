@@ -12,17 +12,24 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import db
+
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, supplier_id):
+
+        self.supplier_id = supplier_id
+
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(511, 226)
+        self.mainWindow = MainWindow
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 140, 451, 71))
+        self.pushButton.clicked.connect(self.add)
         font = QFont()
         font.setPointSize(16)
         self.pushButton.setFont(font)
@@ -50,6 +57,17 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.connection = db.connect()
+        self.cursor = self.connection.cursor()
+        self.cursor.execute(f"SELECT * FROM producto;")
+        products = self.cursor.fetchall()
+        for i in range(len(products)):
+            self.comboBox.addItem(products[i][1])
+        self.cursor.execute(f"SELECT * FROM proveedor WHERE id_proveedor = {self.supplier_id}")
+        proveedor = self.cursor.fetchall()
+        self.comboBox_2.addItem(proveedor[0][1])
+
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
@@ -59,9 +77,20 @@ class Ui_MainWindow(object):
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Producto", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Proveedor", None))
     # retranslateUi
+        
+    def add(self):
+        self.cursor.execute(f"SELECT * FROM producto WHERE nombre = \'{self.comboBox.currentText()}\'")
+        product_id = self.cursor.fetchall()
+        self.cursor.execute(f"INSERT INTO producto_proveedor (id_producto,id_proveedor) VALUES ({product_id[0][0]},{self.supplier_id});")
+        self.mainWindow.close()
+    
+    def closeEvent(self,event):
+        self.connection.close()
+        self.cursor.close()
+        event.accept()
 
 class proveedorProductoAgregar(QMainWindow):
-    def __init__(self):
+    def __init__(self,supplier_id):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self,supplier_id)
