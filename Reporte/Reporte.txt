@@ -1,7 +1,10 @@
 Fecha: 2025-05-22
-Cliente: 
-id_cliente, direccion, nombre, telefono, email
-(3, 'asdsfSDF', 'Jose Panduro', '213213213123', 'JOSE@HOTMAIL.COM')
+Proveedor: 
+id_proveedor, nombre, telefono, email
+(1, 'Moda Urbana S.A.', '+54 11 4455-8899', 'contacto@modaurbana.com')
 
-Ventas: 
-id_venta, fecha de venta, total, metodo de pago, cliente, empleado
+Productos que provee: 
+Nombre del producto, id_proveedor
+('Blusa Floral', 1)
+('Blusa Elegante', 1)
+('Jeans Ajustados', 1)

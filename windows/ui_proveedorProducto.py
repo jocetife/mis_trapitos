@@ -131,10 +131,13 @@ class Ui_MainWindow(object):
         if self.lineEdit_2.text() != "":
             self.cursor.execute(f"SELECT * FROM producto WHERE nombre LIKE \'%{self.lineEdit_2.text()}%\';")
             instances = self.cursor.fetchall()  
+            print(instances)
             for i in range(len(instances)):
+                print(2)
                 self.cursor.execute(f"SELECT producto_proveedor.id_pp, producto.nombre, producto_proveedor.id_proveedor FROM producto_proveedor JOIN producto ON producto.id_producto = producto_proveedor.id_producto WHERE producto_proveedor.id_producto = {instances[i][0]} AND producto_proveedor.id_proveedor = {self.supplier_id};")
                 relationships.append(self.cursor.fetchone())
         else:
+            print(3)
             self.cursor.execute(f"SELECT producto_proveedor.id_pp, producto.nombre, producto_proveedor.id_proveedor FROM producto_proveedor JOIN producto ON producto.id_producto = producto_proveedor.id_producto WHERE producto_proveedor.id_proveedor = {self.supplier_id};")
             relationships = self.cursor.fetchall() 
             self.tableWidget.setRowCount(len(relationships))
